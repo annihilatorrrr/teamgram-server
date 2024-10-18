@@ -1,4 +1,4 @@
-// Copyright 2022 Teamgram Authors
+// Copyright 2024 Teamgram Authors
 //  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,27 +16,23 @@
 // Author: teamgramio (teamgram.io@gmail.com)
 //
 
-package dao
+package core
 
 import (
-	"github.com/teamgram/marmota/pkg/stores/sqlx"
-	"github.com/teamgram/teamgram-server/app/service/biz/message/internal/dal/dao/mysql_dao"
+	"github.com/teamgram/proto/mtproto"
+	"github.com/teamgram/teamgram-server/app/service/biz/user/user"
 )
 
-type Mysql struct {
-	*sqlx.DB
-	*mysql_dao.MessagesDAO
-	*mysql_dao.HashTagsDAO
-	*mysql_dao.MessageReadOutboxDAO
-	*sqlx.CommonDAO
-}
-
-func newMysqlDao(db *sqlx.DB, shardingSize int) *Mysql {
-	return &Mysql{
-		DB:                   db,
-		MessagesDAO:          mysql_dao.NewMessagesDAO(db, shardingSize),
-		HashTagsDAO:          mysql_dao.NewHashTagsDAO(db),
-		MessageReadOutboxDAO: mysql_dao.NewMessageReadOutboxDAO(db),
-		CommonDAO:            sqlx.NewCommonDAO(db),
+// UserGetUserIdByPhone
+// user.getUserIdByPhone phone:string = Int64;
+func (c *UserCore) UserGetUserIdByPhone(in *user.TLUserGetUserIdByPhone) (*mtproto.Int64, error) {
+	id, err := c.svcCtx.Dao.GetUserIdByPhone(c.ctx, in.Phone)
+	if err != nil {
+		c.Logger.Errorf("user.getUserIdByPhone - error: %v", err)
+		return nil, err
 	}
+
+	return &mtproto.Int64{
+		V: id,
+	}, nil
 }
