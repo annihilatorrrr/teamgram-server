@@ -28,9 +28,10 @@ func (c *UpdatesCore) UpdatesGetStateV2(in *updates.TLUpdatesGetStateV2) (*mtpro
 	if seq == 0 {
 		seq = -1
 	}
+	qts := c.svcCtx.Dao.IDGenClient2.CurrentQtsId(c.ctx, in.AuthKeyId)
 	return mtproto.MakeTLUpdatesState(&mtproto.Updates_State{
 		Pts:         pts,
-		Qts:         0,
+		Qts:         qts,
 		Seq:         seq,
 		Date:        int32(time.Now().Unix()), // TODO(@benqi): do.Date2???
 		UnreadCount: 0,
