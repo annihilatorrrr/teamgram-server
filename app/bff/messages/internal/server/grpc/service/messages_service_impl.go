@@ -198,7 +198,7 @@ func (s *Service) MessagesGetMessagesViews(ctx context.Context, request *mtproto
 }
 
 // MessagesSearchGlobal
-// messages.searchGlobal#4bc6589a flags:# broadcasts_only:flags.1?true groups_only:flags.2?true users_only:flags.3?true folder_id:flags.0?int q:string filter:MessagesFilter min_date:int max_date:int offset_rate:int offset_peer:InputPeer offset_id:int limit:int = messages.Messages;
+// messages.searchGlobal#6126a43c flags:# broadcasts_only:flags.1?true groups_only:flags.2?true users_only:flags.3?true folder_id:flags.0?int community:flags.4?InputChannel q:string filter:MessagesFilter min_date:int max_date:int offset_rate:int offset_peer:InputPeer offset_id:int limit:int = messages.Messages;
 func (s *Service) MessagesSearchGlobal(ctx context.Context, request *mtproto.TLMessagesSearchGlobal) (*mtproto.Messages_Messages, error) {
 	c := core.New(ctx, s.svcCtx)
 	c.Logger.Debugf("messages.searchGlobal - metadata: {%s}, request: {%s}", c.MD, request)
@@ -464,6 +464,36 @@ func (s *Service) MessagesGetRichMessage(ctx context.Context, request *mtproto.T
 	}
 
 	c.Logger.Debugf("messages.getRichMessage - reply: {%s}", r)
+	return r, err
+}
+
+// MessagesTranslateRichMessage
+// messages.translateRichMessage#1a542004 flags:# peer:flags.0?InputPeer id:flags.0?Vector<int> text:flags.1?Vector<InputRichMessage> to_lang:string tone:flags.2?string = messages.TranslatedRichMessage;
+func (s *Service) MessagesTranslateRichMessage(ctx context.Context, request *mtproto.TLMessagesTranslateRichMessage) (*mtproto.Messages_TranslatedRichMessage, error) {
+	c := core.New(ctx, s.svcCtx)
+	c.Logger.Debugf("messages.translateRichMessage - metadata: {%s}, request: {%s}", c.MD, request)
+
+	r, err := c.MessagesTranslateRichMessage(request)
+	if err != nil {
+		return nil, err
+	}
+
+	c.Logger.Debugf("messages.translateRichMessage - reply: {%s}", r)
+	return r, err
+}
+
+// MessagesComposeRichMessageWithAI
+// messages.composeRichMessageWithAI#8d7ae6af flags:# proofread:flags.0?true emojify:flags.3?true text:flags.4?InputRichMessage translate_to_lang:flags.1?string tone:flags.2?InputAiComposeTone = messages.ComposedRichMessageWithAI;
+func (s *Service) MessagesComposeRichMessageWithAI(ctx context.Context, request *mtproto.TLMessagesComposeRichMessageWithAI) (*mtproto.Messages_ComposedRichMessageWithAI, error) {
+	c := core.New(ctx, s.svcCtx)
+	c.Logger.Debugf("messages.composeRichMessageWithAI - metadata: {%s}, request: {%s}", c.MD, request)
+
+	r, err := c.MessagesComposeRichMessageWithAI(request)
+	if err != nil {
+		return nil, err
+	}
+
+	c.Logger.Debugf("messages.composeRichMessageWithAI - reply: {%s}", r)
 	return r, err
 }
 

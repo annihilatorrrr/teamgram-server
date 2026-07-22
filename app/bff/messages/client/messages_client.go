@@ -51,6 +51,8 @@ type MessagesClient interface {
 	MessagesGetOutboxReadDate(ctx context.Context, in *mtproto.TLMessagesGetOutboxReadDate) (*mtproto.OutboxReadDate, error)
 	MessagesSummarizeText(ctx context.Context, in *mtproto.TLMessagesSummarizeText) (*mtproto.TextWithEntities, error)
 	MessagesGetRichMessage(ctx context.Context, in *mtproto.TLMessagesGetRichMessage) (*mtproto.Messages_Messages, error)
+	MessagesTranslateRichMessage(ctx context.Context, in *mtproto.TLMessagesTranslateRichMessage) (*mtproto.Messages_TranslatedRichMessage, error)
+	MessagesComposeRichMessageWithAI(ctx context.Context, in *mtproto.TLMessagesComposeRichMessageWithAI) (*mtproto.Messages_ComposedRichMessageWithAI, error)
 	ChannelsGetSendAs(ctx context.Context, in *mtproto.TLChannelsGetSendAs) (*mtproto.Channels_SendAsPeers, error)
 	ChannelsSearchPosts(ctx context.Context, in *mtproto.TLChannelsSearchPosts) (*mtproto.Messages_Messages, error)
 	ChannelsCheckSearchPostsFlood(ctx context.Context, in *mtproto.TLChannelsCheckSearchPostsFlood) (*mtproto.SearchPostsFlood, error)
@@ -151,7 +153,7 @@ func (m *defaultMessagesClient) MessagesGetMessagesViews(ctx context.Context, in
 }
 
 // MessagesSearchGlobal
-// messages.searchGlobal#4bc6589a flags:# broadcasts_only:flags.1?true groups_only:flags.2?true users_only:flags.3?true folder_id:flags.0?int q:string filter:MessagesFilter min_date:int max_date:int offset_rate:int offset_peer:InputPeer offset_id:int limit:int = messages.Messages;
+// messages.searchGlobal#6126a43c flags:# broadcasts_only:flags.1?true groups_only:flags.2?true users_only:flags.3?true folder_id:flags.0?int community:flags.4?InputChannel q:string filter:MessagesFilter min_date:int max_date:int offset_rate:int offset_peer:InputPeer offset_id:int limit:int = messages.Messages;
 func (m *defaultMessagesClient) MessagesSearchGlobal(ctx context.Context, in *mtproto.TLMessagesSearchGlobal) (*mtproto.Messages_Messages, error) {
 	client := mtproto.NewRPCMessagesClient(m.cli.Conn())
 	return client.MessagesSearchGlobal(ctx, in)
@@ -274,6 +276,20 @@ func (m *defaultMessagesClient) MessagesSummarizeText(ctx context.Context, in *m
 func (m *defaultMessagesClient) MessagesGetRichMessage(ctx context.Context, in *mtproto.TLMessagesGetRichMessage) (*mtproto.Messages_Messages, error) {
 	client := mtproto.NewRPCMessagesClient(m.cli.Conn())
 	return client.MessagesGetRichMessage(ctx, in)
+}
+
+// MessagesTranslateRichMessage
+// messages.translateRichMessage#1a542004 flags:# peer:flags.0?InputPeer id:flags.0?Vector<int> text:flags.1?Vector<InputRichMessage> to_lang:string tone:flags.2?string = messages.TranslatedRichMessage;
+func (m *defaultMessagesClient) MessagesTranslateRichMessage(ctx context.Context, in *mtproto.TLMessagesTranslateRichMessage) (*mtproto.Messages_TranslatedRichMessage, error) {
+	client := mtproto.NewRPCMessagesClient(m.cli.Conn())
+	return client.MessagesTranslateRichMessage(ctx, in)
+}
+
+// MessagesComposeRichMessageWithAI
+// messages.composeRichMessageWithAI#8d7ae6af flags:# proofread:flags.0?true emojify:flags.3?true text:flags.4?InputRichMessage translate_to_lang:flags.1?string tone:flags.2?InputAiComposeTone = messages.ComposedRichMessageWithAI;
+func (m *defaultMessagesClient) MessagesComposeRichMessageWithAI(ctx context.Context, in *mtproto.TLMessagesComposeRichMessageWithAI) (*mtproto.Messages_ComposedRichMessageWithAI, error) {
+	client := mtproto.NewRPCMessagesClient(m.cli.Conn())
+	return client.MessagesComposeRichMessageWithAI(ctx, in)
 }
 
 // ChannelsGetSendAs

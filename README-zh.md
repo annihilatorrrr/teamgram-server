@@ -13,7 +13,7 @@
   - **Intermediate**
   - **Padded intermediate**
   - **Full**
-- **API Layer: 227**
+- **API Layer: 228**
 - **Core features**
   - **private chat**
   - **basic group**
